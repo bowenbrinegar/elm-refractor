@@ -1,0 +1,81 @@
+/*
+  elm-hot creates an additional div wrapper around the app to make HMR possible.
+  This could break styling in development mode if you are using Elm UI.
+
+  More context in the issue:
+    https://github.com/halfzebra/create-elm-app/issues/320
+*/
+
+@keyframes animLazer {
+  from {
+    top: 0;
+    left: 0;
+  } to {
+
+    left: 85%;
+    top: 150%;
+    opacity: 1 
+  }
+}
+
+
+:root {
+  --sky-blue: rgb(0, 195, 255);
+  --dark-blue: rgb(43, 93, 139);
+  --space-gray: rgb(28, 39, 39);
+  --light-gray: rgb(85, 111, 134);
+  --midnight: rgb(1, 21, 26);
+  --neon-red: linear-gradient(to left, rgba(255,79,15,1) 0%,rgba(125,185,232,0.22) 78%,rgba(125,185,232,0) 100%);
+}
+
+
+[data-elm-hot="true"] {
+  height: inherit;
+}
+
+body {
+  font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande', 'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  text-align: center;
+  color: #293c4b;
+  background: var(--midnight)
+}
+
+.header-container {
+  position: absolute;
+  transform: translate(-50%, 0%);
+  left: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+h1 {
+  margin: 0;
+  font-size: 30px;
+  font-family: 'ZCOOL KuaiLe', cursive;
+  color: var(--light-gray);
+}
+
+img {
+  margin: 20px 0;
+  max-width: 100px;
+}
+
+.space-lazer {
+  position: absolute;
+  transform: rotate(45deg);
+  background: var(--neon-red);
+  animation: animLazer 2s infinite;
+ 
+
+}
+
+.lazer-container {
+  position: absolute;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
