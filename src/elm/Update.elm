@@ -30,8 +30,10 @@ update msg model =
             (model, generate SetW betweenWidthBounds)
         RandomH -> 
             (model, generate SetH betweenHeightBounds)
-        SetCoords pos ->
-            ( { model | x = String.fromInt(pos.x), y = String.fromInt(pos.y)}, run FireTheCannons )
+        MouseDown pos ->
+            ({ model | x = String.fromInt(pos.x), y = String.fromInt(pos.y), isMouseDown = True}, run FireTheCannons )
+        MouseUp pos -> 
+            ({ model | isMouseDown = False, pointerAngle = 270 }, Cmd.none)
         SetW a ->
             ({ model | w = a }, Cmd.none)
         SetH a ->
@@ -44,6 +46,20 @@ update msg model =
             ({ model | index = model.index + 1 }, Cmd.none)
         ClearIndex ->
             ({ model | index = 0}, Cmd.none)
+        FrameEvent tick ->
+            let 
+                foo = Debug.log "tick" tick
+
+                newAngle = 
+                    if model.isMouseDown then
+                        if model.pointerAngle > 360 then
+                            0
+                        else
+                            model.pointerAngle + (tick * 0.08)
+                    else
+                        model.pointerAngle
+            in
+                ({ model | pointerAngle = newAngle }, Cmd.none)
 
 
 

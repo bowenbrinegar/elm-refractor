@@ -1,6 +1,6 @@
 module Subs exposing (..)
 
-import Browser.Events exposing (..)
+import Browser.Events exposing (onAnimationFrameDelta)
 import Html.Events exposing (..)
 import Messages exposing (..)
 import Models exposing (..)
@@ -13,10 +13,7 @@ import Json.Decode as Json
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch
-        [
-           
-        ]
+    onAnimationFrameDelta FrameEvent
 
 
 

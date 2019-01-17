@@ -13,7 +13,9 @@ type alias Model =
         x: String,
         y: String,
         w: Int,
-        h: Int
+        h: Int,
+        pointerAngle: Float,
+        isMouseDown: Bool
     }
 
 
@@ -26,7 +28,9 @@ initialModel =
         x = "0",
         y = "0",
         w = 0,
-        h = 0
+        h = 0,
+        pointerAngle = 270.0,
+        isMouseDown = False
     }
     
 type alias LazerId =

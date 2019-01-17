@@ -10,10 +10,12 @@ type Msg
     | Randomize
     | RandomW
     | RandomH
-    | SetCoords Coords
+    | MouseDown Coords
+    | MouseUp Coords
     | SetW Int
     | SetH Int
     | CreateLazer 
     | IncrementIndex
     | ClearLazers Coords
     | ClearIndex
+    | FrameEvent Float

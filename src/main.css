@@ -57,6 +57,14 @@ img {
   max-width: 100px;
 }
 
+.cannon {
+  position: absolute;
+  width: 5px;
+  height: 45px;
+  background: aqua;
+  z-index: 10000;
+}
+
 .space-lazer {
   position: absolute;
   background: var(--neon-red);
