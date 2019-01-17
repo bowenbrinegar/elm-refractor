@@ -5,6 +5,7 @@ import Messages exposing (..)
 import Models exposing (..)
 import View exposing (..)
 import Update exposing (..)
+import Subs exposing (..)
 
 ---- MODEL ----
 
