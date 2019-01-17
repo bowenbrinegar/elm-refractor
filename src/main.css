@@ -8,16 +8,11 @@
 
 @keyframes animLazer {
   from {
-    top: 0;
-    left: 0;
   } to {
-
-    left: 85%;
-    top: 150%;
+    left: 100%;
     opacity: 1 
   }
 }
-
 
 :root {
   --sky-blue: rgb(0, 195, 255);
@@ -27,7 +22,6 @@
   --midnight: rgb(1, 21, 26);
   --neon-red: linear-gradient(to left, rgba(255,79,15,1) 0%,rgba(125,185,232,0.22) 78%,rgba(125,185,232,0) 100%);
 }
-
 
 [data-elm-hot="true"] {
   height: inherit;
@@ -65,11 +59,8 @@ img {
 
 .space-lazer {
   position: absolute;
-  transform: rotate(45deg);
   background: var(--neon-red);
   animation: animLazer 2s infinite;
- 
-
 }
 
 .lazer-container {
