@@ -11,8 +11,6 @@ type Msg
     | RandomW
     | RandomH
     | SetCoords Coords
-    | SetX Int
-    | SetY Int
     | SetW Int
     | SetH Int
     | CreateLazer 

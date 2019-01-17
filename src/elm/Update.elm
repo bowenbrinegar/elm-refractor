@@ -32,10 +32,6 @@ update msg model =
             (model, generate SetH betweenHeightBounds)
         SetCoords pos ->
             ( { model | x = String.fromInt(pos.x), y = String.fromInt(pos.y)}, run FireTheCannons )
-        SetX x_pos ->
-            ({ model | x = String.fromInt(x_pos) }, Cmd.none)
-        SetY y_pos ->
-            ({ model | y = String.fromInt(y_pos) }, Cmd.none)
         SetW a ->
             ({ model | w = a }, Cmd.none)
         SetH a ->

@@ -13,8 +13,7 @@ type alias Model =
         x: String,
         y: String,
         w: Int,
-        h: Int,
-        coords: ParsedCoords
+        h: Int
     }
 
 
@@ -27,15 +26,8 @@ initialModel =
         x = "0",
         y = "0",
         w = 0,
-        h = 0,
-        coords = ParsedCoords "1" "1"
+        h = 0
     }
-
-finalDecoder : Decoder Coords
-finalDecoder =
-    Json.succeed Coords
-        |> Pipe.required "clientX" Json.int
-        |> Pipe.required "clientY" Json.int
     
 type alias LazerId =
     Int
@@ -53,12 +45,6 @@ type alias Coords =
     { 
         x : Int, 
         y : Int 
-    }
-
-type alias ParsedCoords = 
-    { 
-        x : String, 
-        y : String 
     }
 
 
