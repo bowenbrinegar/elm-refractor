@@ -14,7 +14,8 @@ view model =
     div []
         [   div [class "header-container"] [
                 header,
-                h1 [] [text (String.fromInt (round model.pointerAngle))]
+                h1 [] [text (String.fromInt (round model.pointerAngle))],
+                mouseDown model
             ],
             cannonPointer model,
             div [
@@ -28,9 +29,18 @@ view model =
 
 eventDecoder : Decoder Coords
 eventDecoder =
-    Json.map2 Coords
+    Json.map4 Coords
         (Json.at ["clientX"] Json.int)
         (Json.at ["clientY"] Json.int) 
+        (Json.at ["currentTarget", "clientWidth"] Json.int) 
+        (Json.at ["currentTarget", "clientHeight"] Json.int) 
+
+mouseDown : Model -> Html h1
+mouseDown model =
+    if model.isMouseDown then
+        h1 [] [text "True"]
+    else
+        h1 [] [text "False"]
 
 renderIndex : String -> Html h1
 renderIndex a =
@@ -46,7 +56,7 @@ cannonPointer model =
             class "cannon",
             style "left" (String.fromInt model.x ++ "px"),
             style "top" (String.fromInt model.y ++ "px"),
-            style "transform" ("rotate(" ++ String.fromFloat (model.pointerAngle + 90) ++ "deg" ),
+            style "transform" ("rotate(" ++ String.fromFloat (model.pointerAngle) ++ "deg" ),
             on "mouseup" (Json.map MouseUp eventDecoder)
         ] []
     else
@@ -64,13 +74,12 @@ renderLazer : Lazer -> Html msg
 renderLazer lazer =
     div [
         class "space-lazer", 
-        style "width" (String.fromInt lazer.cur_width ++ "px"),
-        style "height" (String.fromInt lazer.height ++ "px"),
+        style "height" (String.fromInt lazer.cur_width ++ "px"),
+        style "width" (String.fromInt lazer.height ++ "px"),
         style "left" (String.fromInt lazer.x_pos ++ "px"),
         style "top" (String.fromInt lazer.y_pos ++ "px"),
-        style "transform" ("rotate(" ++ String.fromFloat lazer.rotate ++ "deg" ),
+        style "transform" ("rotate(" ++ String.fromFloat lazer.rotate ++ "deg)" ),
         style "background" ("linear-gradient(" ++ lazer.gradientDirection ++ ", rgba(48,202,244,1) 0%,rgba(48,202,244,0.99) 1%,rgba(125,185,232,0.02) 97%,rgba(125,185,232,0) 99%);")
     ] [
-        h1 [] [text (String.fromInt (round(lazer.y_ratio / lazer.x_ratio)))]
     ]
     

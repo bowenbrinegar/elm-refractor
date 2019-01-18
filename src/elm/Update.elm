@@ -31,7 +31,7 @@ update msg model =
         RandomH -> 
             (model, generate SetH betweenHeightBounds)
         MouseDown pos ->
-            ({ model | x = pos.x, y = pos.y + 45, isMouseDown = True}, Cmd.none )
+            ({ model | x = pos.x, y = pos.y, div_w = pos.w, div_h = pos.h, isMouseDown = True}, Cmd.none )
         MouseUp pos -> 
             ({ model | isMouseDown = False }, run FireTheCannons)
         SetW a ->
@@ -39,17 +39,57 @@ update msg model =
         SetH a ->
             ({ model | h = a }, Cmd.none)
         CreateLazer -> 
-            let 
-                x_ratio = cos model.pointerAngle
-                y_ratio = sin model.pointerAngle
+            let
+                clientX = model.div_w
+                clientY = model.div_h
+                num = round model.pointerAngle
+                target_x =
+                    if num <= 45 then
+                        (toFloat (model.y - clientY) * tan (model.pointerAngle - 45))
+                    else if num <= 90 then 
+                        0.0
+                    else if num <= 135 then 
+                        0.0
+                    else if num <= 180 then 
+                        (toFloat model.y) * tan (model.pointerAngle - 180)
+                    else if num <= 225 then
+                        (toFloat model.y) * tan (model.pointerAngle - 225)
+                    else if num <= 270 then
+                        toFloat clientX
+                    else if num <= 315 then
+                        toFloat clientX
+                    else    
+                        (toFloat model.y) * tan (model.pointerAngle - 360)
+                target_y =
+                    if num <= 45 then
+                        toFloat clientY
+                    else if num <= 90 then 
+                        toFloat (model.x) * tan (model.pointerAngle - 90)
+                    else if num <= 135 then 
+                        toFloat (model.x) * tan (model.pointerAngle - 135)
+                    else if num <= 180 then 
+                        0.0
+                    else if num <= 225 then
+                        0.0
+                    else if num <= 270 then
+                        (toFloat (model.x - clientX)) * tan (model.pointerAngle - 270)
+                    else if num <= 315 then
+                        (toFloat (model.x - clientX)) * tan (model.pointerAngle - 315)
+                    else
+                        toFloat clientY
+
+                xerpos = Debug.log "x_pos" model.x
+                xer = Debug.log "target x" target_x
+                yerpos = Debug.log "y_pos" model.y
+                yer = Debug.log "target y" target_y
                 gradientDirection = 
                     if model.pointerAngle <= 180 then
-                        "to bottom"
+                        "to left"
                     else
-                        "to top"
+                        "to right"
                 newLazer =
-                    Lazer model.index (model.x) (model.y) 0 (model.w) 
-                    (model.h) model.pointerAngle x_ratio y_ratio gradientDirection
+                    Lazer model.index model.x model.y target_x target_y 0 (model.w) 
+                    (model.h) model.pointerAngle gradientDirection
             in
                 ({ model | lazers = newLazer :: model.lazers}, run IncrementIndex)
         ClearLazers pos ->
@@ -65,14 +105,14 @@ update msg model =
                         if model.pointerAngle > 360 then
                             0
                         else
-                            model.pointerAngle + (tick * 0.2)
+                            model.pointerAngle + (tick)
                     else
                         model.pointerAngle
             in
                 ({ model | pointerAngle = newAngle }, run MassAnimationUpdate)
         MassAnimationUpdate ->
             let 
-                newList = List.map runUpdateOnLazer model.lazers
+                newList = List.map (runUpdateOnLazer model) model.lazers
             in
                 ({ model | lazers = newList }, Cmd.none)
 
@@ -80,38 +120,28 @@ update msg model =
 ---- Lazer Update ----
 
 
-runUpdateOnLazer : Lazer -> Lazer
-runUpdateOnLazer lazer = 
+runUpdateOnLazer : Model -> Lazer -> Lazer
+runUpdateOnLazer model lazer = 
     let 
         newCurWidth = 
             if lazer.cur_width < lazer.width then
                 lazer.cur_width + 50
             else
                 lazer.width
-    
-        newX = lazer.x_pos + round (lazer.x_ratio * 10)
-            -- if lazer.rotate <= 90 then
-            --     lazer.x_pos + round (7 * x_ratio)
-            -- else if lazer.rotate <= 180 then
-            --     lazer.x_pos + round (7 * x_ratio)
-            -- else if lazer.rotate <= 270 then
-            --     lazer.x_pos + round (-7 * x_ratio)
-            -- else
-            --     lazer.x_pos + round (-7 * x_ratio)
-        
-        newY = lazer.y_pos + round (lazer.y_ratio * 10)
-            -- if lazer.rotate <= 90 then
-            --     lazer.y_pos + round (7 * y_ratio)
-            -- else if lazer.rotate <= 180 then
-            --     lazer.y_pos + round (-7 * y_ratio)
-            -- else if lazer.rotate <= 270 then
-            --     lazer.y_pos + round (-7 * y_ratio)
-            -- else
-            --     lazer.y_pos + round (7 * y_ratio)
-            
+        newX = 
+            if lazer.target_x == 0.0 then
+                lazer.x_pos - round (toFloat lazer.x_pos * 0.03)                
+            else
+                lazer.x_pos + round (lazer.target_x * 0.03)
+        newY = 
+            if lazer.target_y == 0.0 then
+                lazer.y_pos - round (toFloat lazer.y_pos * 0.03)                
+            else
+                lazer.y_pos + round (lazer.target_y * 0.03)
         newLazer = 
-            Lazer lazer.id newX newY lazer.width lazer.width 
-            lazer.height lazer.rotate lazer.x_ratio lazer.y_ratio lazer.gradientDirection
+            Lazer lazer.id newX newY lazer.target_x lazer.target_y newCurWidth lazer.width 
+            lazer.height lazer.rotate lazer.gradientDirection
+
     in
         newLazer
 
