@@ -10,14 +10,13 @@ type alias Model =
         lazers: List Lazer,
         index: Int,
         seed: Seed,
-        x: String,
-        y: String,
+        x: Int,
+        y: Int,
         w: Int,
         h: Int,
         pointerAngle: Float,
         isMouseDown: Bool
     }
-
 
 initialModel : Model
 initialModel = 
@@ -25,11 +24,11 @@ initialModel =
         lazers = [],
         index = 0,
         seed = Random.initialSeed 50,
-        x = "0",
-        y = "0",
+        x = 0,
+        y = 0,
         w = 0,
         h = 0,
-        pointerAngle = 270.0,
+        pointerAngle = 180.0,
         isMouseDown = False
     }
     
@@ -39,10 +38,15 @@ type alias LazerId =
 type alias Lazer = 
     {
         id : LazerId,
-        x_pos : String,
-        y_pos : String,
-        width: String,
-        height: String
+        x_pos : Int,
+        y_pos : Int,
+        cur_width: Int,
+        width: Int,
+        height: Int,
+        rotate: Float,
+        x_ratio: Float,
+        y_ratio: Float,
+        gradientDirection: String
     }
     
 type alias Coords = 
