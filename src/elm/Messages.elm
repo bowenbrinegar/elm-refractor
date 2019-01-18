@@ -14,8 +14,9 @@ type Msg
     | MouseUp Coords
     | SetW Int
     | SetH Int
-    | CreateLazer 
+    | CreateLazer
     | IncrementIndex
     | ClearLazers Coords
     | ClearIndex
     | FrameEvent Float
+    | MassAnimationUpdate

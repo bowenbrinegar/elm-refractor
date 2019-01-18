@@ -6,13 +6,7 @@
     https://github.com/halfzebra/create-elm-app/issues/320
 */
 
-@keyframes animLazer {
-  from {
-  } to {
-    left: 100%;
-    opacity: 1 
-  }
-}
+
 
 :root {
   --sky-blue: rgb(0, 195, 255);
@@ -32,7 +26,7 @@ body {
   margin: 0;
   text-align: center;
   color: #293c4b;
-  background: var(--midnight)
+  background: var(--midnight);
 }
 
 .header-container {
@@ -43,6 +37,7 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  cursor: pointer;
 }
 
 h1 {
@@ -59,16 +54,19 @@ img {
 
 .cannon {
   position: absolute;
-  width: 5px;
+  width: 10px;
   height: 45px;
-  background: aqua;
+  background: linear-gradient(to bottom, rgba(48,202,244,1) 0%,rgba(48,202,244,0.99) 1%,rgba(125,185,232,0.02) 97%,rgba(125,185,232,0) 99%);
   z-index: 10000;
+  border-radius: 20px 20px 0 0;
+  transform-origin: 50% 0%;
+  cursor: none;
 }
 
 .space-lazer {
   position: absolute;
   background: var(--neon-red);
-  animation: animLazer 2s infinite;
+  animation: animLazer 2s normal forwards ease-in-out;
 }
 
 .lazer-container {
@@ -76,5 +74,6 @@ img {
   overflow: hidden;
   height: 100vh;
   width: 100vw;
+  cursor: none;
 }
 
