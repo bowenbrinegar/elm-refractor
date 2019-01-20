@@ -59,14 +59,14 @@ img {
   background: linear-gradient(to bottom, rgba(48,202,244,1) 0%,rgba(48,202,244,0.99) 1%,rgba(125,185,232,0.02) 97%,rgba(125,185,232,0) 99%);
   z-index: 10000;
   border-radius: 20px 20px 0 0;
-  transform-origin: 50% 0%;
   cursor: none;
+  transform-origin: 0 0;
 }
 
 .space-lazer {
   position: absolute;
   background: var(--neon-red);
-  animation: animLazer 2s normal forwards ease-in-out;
+  transform-origin: top center;
 }
 
 .lazer-container {
@@ -74,6 +74,6 @@ img {
   overflow: hidden;
   height: 100vh;
   width: 100vw;
-  cursor: none;
+  cursor: pointer;
 }
 

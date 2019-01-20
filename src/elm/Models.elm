@@ -14,6 +14,8 @@ type alias Model =
         y: Int,
         w: Int,
         h: Int,
+        div_w : Int,
+        div_h : Int,
         pointerAngle: Float,
         isMouseDown: Bool
     }
@@ -28,7 +30,9 @@ initialModel =
         y = 0,
         w = 0,
         h = 0,
-        pointerAngle = 180.0,
+        div_w = 0,
+        div_h = 0,
+        pointerAngle = 225.0,
         isMouseDown = False
     }
     
@@ -38,21 +42,25 @@ type alias LazerId =
 type alias Lazer = 
     {
         id : LazerId,
-        x_pos : Int,
-        y_pos : Int,
+        initial_x : Int,
+        initial_y : Int,
+        x_pos : Float,
+        y_pos : Float,
+        target_x : Float,
+        target_y : Float,
         cur_width: Int,
-        width: Int,
-        height: Int,
-        rotate: Float,
-        x_ratio: Float,
-        y_ratio: Float,
-        gradientDirection: String
+        width : Int,
+        height : Int,
+        rotate : Float,
+        gradientDirection : String
     }
     
 type alias Coords = 
     { 
         x : Int, 
-        y : Int 
+        y : Int,
+        w : Int,
+        h : Int
     }
 
 
