@@ -43,55 +43,25 @@ update msg model =
                 clientX = model.div_w
                 clientY = model.div_h
                 num = round model.pointerAngle
-                target_x =
-                    if num <= 45 then
-                        (toFloat (model.y - clientY) * tan (model.pointerAngle - 45))
-                    else if num <= 90 then 
-                        0.0
-                    else if num <= 135 then 
-                        0.0
-                    else if num <= 180 then 
-                        (toFloat model.y) * tan (model.pointerAngle - 180)
-                    else if num <= 225 then
-                        (toFloat model.y) * tan (model.pointerAngle - 225)
-                    else if num <= 270 then
-                        toFloat clientX
-                    else if num <= 315 then
-                        toFloat clientX
-                    else    
-                        (toFloat model.y) * tan (model.pointerAngle - 360)
-                target_y =
-                    if num <= 45 then
-                        toFloat clientY
-                    else if num <= 90 then 
-                        toFloat (model.x) * tan (model.pointerAngle - 90)
-                    else if num <= 135 then 
-                        toFloat (model.x) * tan (model.pointerAngle - 135)
-                    else if num <= 180 then 
-                        0.0
-                    else if num <= 225 then
-                        0.0
-                    else if num <= 270 then
-                        (toFloat (model.x - clientX)) * tan (model.pointerAngle - 270)
-                    else if num <= 315 then
-                        (toFloat (model.x - clientX)) * tan (model.pointerAngle - 315)
-                    else
-                        toFloat clientY
-
-                xerpos = Debug.log "x_pos" model.x
-                xer = Debug.log "target x" target_x
-                yerpos = Debug.log "y_pos" model.y
-                yer = Debug.log "target y" target_y
                 gradientDirection = 
                     if model.pointerAngle <= 180 then
                         "to left"
                     else
                         "to right"
                 newLazer =
-                    Lazer model.index model.x model.y target_x target_y 0 (model.w) 
-                    (model.h) model.pointerAngle gradientDirection
+                    if model.pointerAngle == 0 then
+                        model.lazers
+                    else if model.pointerAngle == 90 then
+                        model.lazers
+                    else if model.pointerAngle == 270 then
+                        model.lazers
+                    else if model.pointerAngle == 360 then
+                        model.lazers
+                    else
+                        Lazer model.index model.x model.y (toFloat model.x) (toFloat model.y) 0 0 0 (model.w) 
+                        (model.h) model.pointerAngle gradientDirection :: model.lazers
             in
-                ({ model | lazers = newLazer :: model.lazers}, run IncrementIndex)
+                ({ model | lazers = newLazer }, run IncrementIndex)
         ClearLazers pos ->
             ({ model | lazers = []}, run ClearIndex)
         IncrementIndex ->
@@ -102,10 +72,10 @@ update msg model =
             let 
                 newAngle = 
                     if model.isMouseDown then
-                        if model.pointerAngle > 360 then
+                        if model.pointerAngle > 350 then
                             0
                         else
-                            model.pointerAngle + (tick)
+                            model.pointerAngle + 5
                     else
                         model.pointerAngle
             in
@@ -123,27 +93,41 @@ update msg model =
 runUpdateOnLazer : Model -> Lazer -> Lazer
 runUpdateOnLazer model lazer = 
     let 
-        newCurWidth = 
+        newCurWidth =
             if lazer.cur_width < lazer.width then
                 lazer.cur_width + 50
             else
                 lazer.width
-        newX = 
-            if lazer.target_x == 0.0 then
-                lazer.x_pos - round (toFloat lazer.x_pos * 0.03)                
+        currRotate =
+            if lazer.rotate <= 90 then
+                lazer.rotate
+            else if lazer.rotate <= 180 then
+                lazer.rotate - 90
+            else if lazer.rotate <= 270 then
+                lazer.rotate - 180
             else
-                lazer.x_pos + round (lazer.target_x * 0.03)
+                lazer.rotate - 270
+        newX =
+            if lazer.rotate <= 90 then
+                lazer.x_pos - (currRotate / ((90 - currRotate) / 3.6))
+            else if lazer.rotate <= 180 then
+                lazer.x_pos - (currRotate / ((currRotate) / 3.6))
+            else if lazer.rotate <= 270 then
+                lazer.x_pos + (currRotate / ((90 - currRotate) / 3.6))
+            else
+                lazer.x_pos + (currRotate / ((currRotate) / 3.6))
         newY = 
-            if lazer.target_y == 0.0 then
-                lazer.y_pos - round (toFloat lazer.y_pos * 0.03)                
+            if lazer.rotate <= 90 then
+                lazer.y_pos + (currRotate / ((currRotate) / 3.6))
+            else if lazer.rotate <= 180 then
+                lazer.y_pos - (currRotate / ((90 - currRotate) / 3.6))
+            else if lazer.rotate <= 270 then
+                lazer.y_pos - (currRotate / ((currRotate) / 3.6))
             else
-                lazer.y_pos + round (lazer.target_y * 0.03)
-        newLazer = 
-            Lazer lazer.id newX newY lazer.target_x lazer.target_y newCurWidth lazer.width 
-            lazer.height lazer.rotate lazer.gradientDirection
-
+                lazer.y_pos + (currRotate / ((90 - currRotate) / 3.6))
     in
-        newLazer
+        Lazer lazer.id lazer.initial_x lazer.initial_y newX newY lazer.target_x lazer.target_y lazer.width lazer.width 
+        lazer.height lazer.rotate lazer.gradientDirection
 
 
 ---- Utilities ----

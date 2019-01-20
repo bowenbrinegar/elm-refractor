@@ -32,7 +32,7 @@ initialModel =
         h = 0,
         div_w = 0,
         div_h = 0,
-        pointerAngle = 180.0,
+        pointerAngle = 225.0,
         isMouseDown = False
     }
     
@@ -42,8 +42,10 @@ type alias LazerId =
 type alias Lazer = 
     {
         id : LazerId,
-        x_pos : Int,
-        y_pos : Int,
+        initial_x : Int,
+        initial_y : Int,
+        x_pos : Float,
+        y_pos : Float,
         target_x : Float,
         target_y : Float,
         cur_width: Int,

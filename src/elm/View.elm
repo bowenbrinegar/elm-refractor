@@ -13,9 +13,7 @@ view : Model -> Html Msg
 view model =
     div []
         [   div [class "header-container"] [
-                header,
-                h1 [] [text (String.fromInt (round model.pointerAngle))],
-                mouseDown model
+                header
             ],
             cannonPointer model,
             div [
@@ -34,13 +32,6 @@ eventDecoder =
         (Json.at ["clientY"] Json.int) 
         (Json.at ["currentTarget", "clientWidth"] Json.int) 
         (Json.at ["currentTarget", "clientHeight"] Json.int) 
-
-mouseDown : Model -> Html h1
-mouseDown model =
-    if model.isMouseDown then
-        h1 [] [text "True"]
-    else
-        h1 [] [text "False"]
 
 renderIndex : String -> Html h1
 renderIndex a =
@@ -76,8 +67,8 @@ renderLazer lazer =
         class "space-lazer", 
         style "height" (String.fromInt lazer.cur_width ++ "px"),
         style "width" (String.fromInt lazer.height ++ "px"),
-        style "left" (String.fromInt lazer.x_pos ++ "px"),
-        style "top" (String.fromInt lazer.y_pos ++ "px"),
+        style "left" (String.fromFloat lazer.x_pos ++ "px"),
+        style "top" (String.fromFloat lazer.y_pos ++ "px"),
         style "transform" ("rotate(" ++ String.fromFloat lazer.rotate ++ "deg)" ),
         style "background" ("linear-gradient(" ++ lazer.gradientDirection ++ ", rgba(48,202,244,1) 0%,rgba(48,202,244,0.99) 1%,rgba(125,185,232,0.02) 97%,rgba(125,185,232,0) 99%);")
     ] [
