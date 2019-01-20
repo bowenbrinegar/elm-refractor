@@ -7,17 +7,16 @@ import Json.Decode.Pipeline as Pipe
 
 type alias Model = 
     {
-        lazers: List Lazer,
-        index: Int,
-        seed: Seed,
-        x: Int,
-        y: Int,
-        w: Int,
-        h: Int,
+        lazers : List Lazer,
+        index : Int,
+        x : Int,
+        y : Int,
+        w : Int,
+        h : Int,
         div_w : Int,
         div_h : Int,
-        pointerAngle: Float,
-        isMouseDown: Bool
+        pointerAngle : Float,
+        isMouseDown : Bool
     }
 
 initialModel : Model
@@ -25,7 +24,6 @@ initialModel =
     {
         lazers = [],
         index = 0,
-        seed = Random.initialSeed 50,
         x = 0,
         y = 0,
         w = 0,
@@ -42,17 +40,14 @@ type alias LazerId =
 type alias Lazer = 
     {
         id : LazerId,
-        initial_x : Int,
-        initial_y : Int,
         x_pos : Float,
         y_pos : Float,
-        target_x : Float,
-        target_y : Float,
         cur_width: Int,
         width : Int,
         height : Int,
         rotate : Float,
-        gradientDirection : String
+        gradientDirection : String,
+        angle : Float
     }
     
 type alias Coords = 

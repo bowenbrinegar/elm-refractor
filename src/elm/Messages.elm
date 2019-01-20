@@ -8,8 +8,6 @@ import Models exposing (..)
 type Msg
     = FireTheCannons
     | Randomize
-    | RandomW
-    | RandomH
     | MouseDown Coords
     | MouseUp Coords
     | SetW Int
@@ -19,4 +17,4 @@ type Msg
     | ClearLazers Coords
     | ClearIndex
     | FrameEvent Float
-    | MassAnimationUpdate
+    | MassAnimation
