@@ -33,12 +33,13 @@ eventDecoder =
         (Json.at ["currentTarget", "clientWidth"] Json.int) 
         (Json.at ["currentTarget", "clientHeight"] Json.int) 
 
-renderIndex : String -> Html h1
-renderIndex a =
-    let
-        num = a
-    in
-        h1 [] [ text num ]
+header : Html Msg
+header = 
+    div []
+        [
+            img [ src "/logo.svg", on "click" (Json.map ClearLazers eventDecoder)] [],
+            h1 [] [ text "Space Lazers!"]
+        ]
 
 cannonPointer : Model -> Html Msg
 cannonPointer model = 
@@ -52,14 +53,6 @@ cannonPointer model =
         ] []
     else
         div [] []
-
-header : Html Msg
-header = 
-    div []
-        [
-            img [ src "/logo.svg", on "click" (Json.map ClearLazers eventDecoder)] [],
-            h1 [] [ text "Space Lazers!"]
-        ]
 
 renderLazer : Lazer -> Html msg
 renderLazer lazer =
