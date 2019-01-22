@@ -7,7 +7,12 @@ import Task exposing (..)
 import Debug exposing (log)
 import Json.Decode as Json exposing (Decoder)
 import Json.Decode.Pipeline as PL exposing (..)
-import LazerCommands exposing (..)
+import List.Extra exposing (filterNot)
+import Utils exposing (..)
+import LazerCreation exposing (..)
+import LazerCalibration exposing (..)
+import LazerRefraction exposing (..)
+import CalculateFinalCoords exposing (..)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -22,13 +27,26 @@ update msg model =
                 runUpdateOnLazer lazer =
                     let
                         newWidth = calculateWidth lazer.cur_width lazer.width
-                        targetX = xCalibration lazer.x_pos lazer.angle lazer.rotate
-                        targetY = yCalibration lazer.y_pos lazer.angle lazer.rotate
+                        xCalib = xCalibration lazer.angle lazer.rotate
+                        yCalib = yCalibration lazer.angle lazer.rotate
+                        targetX = assessX lazer.rotate xCalib lazer.x_pos
+                        targetY = assessY lazer.rotate yCalib lazer.y_pos
                     in
                         { lazer | x_pos = targetX, y_pos = targetY, cur_width = newWidth } 
                 mappedLazers = List.map runUpdateOnLazer model.lazers
             in
-                ({ model | lazers = mappedLazers}, Cmd.none)
+                ({ model | lazers = mappedLazers }, run CalculatedFinalXY)
+        CalculatedFinalXY ->
+            let
+                calculated = List.map (calculateFinalXY model) model.lazers
+                filteredLazers = List.filter (isInbounds model) calculated
+            in
+                ({ model | lazers = filteredLazers }, run CheckRefraction )
+        CheckRefraction ->
+            let
+                updatedLazers = List.map (isRefraction model) model.lazers
+            in
+                ({ model | lazers = updatedLazers }, Cmd.none )
         MouseDown pos ->
             ({ model | x = pos.x, y = pos.y, div_w = pos.w, div_h = pos.h, isMouseDown = True}, Cmd.none )
         MouseUp pos -> 
@@ -55,15 +73,6 @@ update msg model =
         SetH a ->
             ({ model | h = a }, Cmd.none)
 
----- Utilities ----
-    
-run : Msg -> Cmd Msg
-run message = 
-    Task.perform (always message) (Task.succeed ())
-
-toString : Int -> String
-toString a =    
-    String.fromInt(a)
 
 
 

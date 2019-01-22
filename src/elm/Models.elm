@@ -40,14 +40,19 @@ type alias LazerId =
 type alias Lazer = 
     {
         id : LazerId,
+        initial_x : Float,
+        initial_y : Float,
         x_pos : Float,
         y_pos : Float,
+        final_x : Float,
+        final_y : Float,
         cur_width: Int,
         width : Int,
         height : Int,
         rotate : Float,
         gradientDirection : String,
-        angle : Float
+        angle : Float,
+        isRefraction : Bool
     }
     
 type alias Coords = 
@@ -56,6 +61,12 @@ type alias Coords =
         y : Int,
         w : Int,
         h : Int
+    }
+
+type alias FinalCoords = 
+    {
+        x : Float,
+        y : Float
     }
 
 
