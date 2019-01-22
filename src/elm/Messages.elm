@@ -18,3 +18,5 @@ type Msg
     | ClearIndex
     | FrameEvent Float
     | MassAnimation
+    | CheckRefraction
+    | CalculatedFinalXY
