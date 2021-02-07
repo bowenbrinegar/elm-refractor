@@ -174,7 +174,6 @@ createRefraction model lazer =
     
         gradientDirection = generateGradient finalNewRotate
         newAngle = angleCalibration finalNewRotate
-        debug = Debug.log "hit" edge
     in
         Lazer lazer.id finalX finalY finalX finalY 0 0 0 lazer.width lazer.height finalNewRotate
         gradientDirection newAngle True

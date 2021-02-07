@@ -38,7 +38,7 @@ header =
     div []
         [
             img [ src "/logo.svg", on "click" (Json.map ClearLazers eventDecoder)] [],
-            h1 [] [ text "Space Lazers!"]
+            h1 [] [ text "Elm Refractor!"]
         ]
 
 cannonPointer : Model -> Html Msg
