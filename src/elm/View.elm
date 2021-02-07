@@ -1,6 +1,6 @@
 module View exposing (..)
 
-import Html exposing (Html, text, div, h1, img, button, Attribute)
+import Html exposing (Html, text, div, h1, h3, img, button, Attribute)
 import Html.Attributes exposing (src, class, style)
 import Html.Events exposing (..)
 import Models exposing (..)
@@ -38,7 +38,8 @@ header =
     div []
         [
             img [ src "/logo.svg", on "click" (Json.map ClearLazers eventDecoder)] [],
-            h1 [] [ text "Elm Refractor!"]
+            h1 [] [ text "Elm Refractor!"],
+            h3 [] [ text "Click anywhere and Click Fast to Play!"]
         ]
 
 cannonPointer : Model -> Html Msg
